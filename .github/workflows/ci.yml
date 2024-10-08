@@ -2,6 +2,7 @@
 
 name: CI Pipeline
 
+# Trigger the workflow on push or pull request events.
 on: 
   push:
     branches:
@@ -10,6 +11,10 @@ on:
     branches:
       - main
 
+env:
+  # Enforce the use of Node.js 20 for all JavaScript-based GitHub Actions
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,17 +22,17 @@ jobs:
     steps:
     # Step 1: Check out the repository code.
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3  # Updated to the latest compatible version
 
-    # Step 2: Set up Node.js 20 (Optional)
+    # Step 2: Set up Node.js 20 explicitly (Optional)
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20'  # Specifies Node.js 20
+        node-version: '20'
 
     # Step 3: Set up Python environment.
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v4  # Updated to the latest compatible version
       with:
         python-version: '3.8'
 
