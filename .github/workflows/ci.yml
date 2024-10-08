@@ -1,8 +1,8 @@
 # .github/workflows/ci.yml
 
-name: CI Pipeline
+name: Logistic Regression CI/CD Pipeline
 
-# Trigger the workflow on push or pull request events.
+# Trigger the workflow on push or pull request events to the main branch.
 on: 
   push:
     branches:
@@ -11,38 +11,33 @@ on:
     branches:
       - main
 
-env:
-  # Enforce the use of Node.js 20 for all JavaScript-based GitHub Actions
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
-
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
     # Step 1: Check out the repository code.
     - name: Checkout code
-      uses: actions/checkout@v3  # Updated to the latest compatible version
+      uses: actions/checkout@v3
 
-    # Step 2: Set up Node.js 20 explicitly (Optional)
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
-
-    # Step 3: Set up Python environment.
+    # Step 2: Set up Python environment.
     - name: Set up Python
-      uses: actions/setup-python@v4  # Updated to the latest compatible version
+      uses: actions/setup-python@v4
       with:
         python-version: '3.8'
 
-    # Step 4: Install dependencies.
+    # Step 3: Install dependencies.
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest
+        pip install -r requirements.txt
 
-    # Step 5: Run tests.
+    # Step 4: Run the training script.
+    - name: Train the logistic regression model
+      run: |
+        python train.py
+
+    # Step 5: Run the tests.
     - name: Run tests
       run: |
-        pytest test_hello.py
+        pytest test_train.py
