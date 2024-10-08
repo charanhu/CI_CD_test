@@ -2,7 +2,6 @@
 
 name: CI Pipeline
 
-# Trigger the workflow on push or pull request events.
 on: 
   push:
     branches:
@@ -18,21 +17,27 @@ jobs:
     steps:
     # Step 1: Check out the repository code.
     - name: Checkout code
-      uses: actions/checkout@v3  # Updated from @v2 to @v3
+      uses: actions/checkout@v3
 
-    # Step 2: Set up Python environment.
+    # Step 2: Set up Node.js 20 (Optional)
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'  # Specifies Node.js 20
+
+    # Step 3: Set up Python environment.
     - name: Set up Python
-      uses: actions/setup-python@v4  # Updated from @v2 to @v4
+      uses: actions/setup-python@v4
       with:
         python-version: '3.8'
 
-    # Step 3: Install dependencies.
+    # Step 4: Install dependencies.
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pytest
 
-    # Step 4: Run tests.
+    # Step 5: Run tests.
     - name: Run tests
       run: |
         pytest test_hello.py
